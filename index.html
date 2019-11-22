@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS实现二级联动菜单</title>
+    <style>
+        html,body {
+            width:100%;
+            height:100%;
+            margin:0 0;
+        }
+        #list {
+            border-top:50px;
+            z-index:9999;
+            position:absolute;
+            z-index:100;
+            left:50px;
+            top:50px;
+            opacity:0.8;
+            background-color:#f9f9f9;
+        }</style>
+</head>
+<body>
+<div id="list">
+    <form name="lineandstation">
+        校区:
+        <select name="lines" id="lines" onchange="getStationName()">
+            <option value="0">请选择校区</option>
+        </select> 公寓选择：
+        <select name="station">
+            <option value="0">请选择公寓</option>
+        </select>
+    </form>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    let lineNum = [];
+    let obj = [{
+        "parkName": "沙河校区",
+        "id": '1',
+        "paekBu": [{
+            "id": "402881fe63f381630163fbfe01470044",
+            "NAME": "13号公寓"
+        }, {
+            "id": "402881fe63f381630163fbfeadb10046",
+            "NAME": "15号公寓"
+        },{
+            "id": "402881866e210531016e341dd84e0015",
+            "NAME": "16号公寓"
+        }]
+    }, {
+        "parkName": "沙河校区1",
+        id:'2',
+        "paekBu": [{
+            "id": "402881fe63f381630163fbfe01470044",
+            "NAME": "18号公寓"
+        }, {
+            "id": "402881fe63f381630163fbfeadb10046",
+            "NAME": "19号公寓"
+        }, {
+            "id": "402881866e210531016e341dd84e0015",
+            "NAME": "90号公寓"
+        }]
+    }, {
+        "parkName": "沙河校区2",
+        id:'2',
+        "paekBu": [{
+            "id": "402881fe63f381630163fbfe01470044",
+            "NAME": "21号公寓"
+        }, {
+            "id": "402881fe63f381630163fbfeadb10046",
+            "NAME": "31号公寓"
+        }, {
+            "id": "402881866e210531016e341dd84e0015",
+            "NAME": "41号公寓"
+        }]
+    }]
+    obj.filter((item,index)=>{
+        lineNum.push(item.parkName);
+    })
+
+    let collect = document.getElementById("lines")
+    let old = collect.innerHTML
+    function aa() {
+        let lineNu = " "
+        for (let j = 0; j < lineNum.length; j++) {
+            lineNu += '<option>' + lineNum[j] + '</option>';
+        }
+        collect.innerHTML = old + lineNu;
+    }
+    aa();
+
+    function getStationName() {
+        let arr =[];
+        let stationName =[];
+        let line_num = document.lineandstation.lines;
+        stationName.push(obj[line_num.selectedIndex-1]);
+        stationName.filter(item=>{
+            item.paekBu.filter(i=>{
+                arr.push(i.NAME);
+            })
+        });
+        let station_name = document.lineandstation.station;
+        station_name.length = 1;
+        for (let i = 0; i < arr.length; i++) {
+            station_name[i + 1] = new Option(arr[i],arr[i]);
+        }
+    }
+
+</script>
